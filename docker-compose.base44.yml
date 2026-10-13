@@ -1,0 +1,18 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      - BASE44_PREVIEW_MODE
+      - FLASK_DEBUG=1
+    command: ["python", "app.py"]
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:3000/')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
